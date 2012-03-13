@@ -1,0 +1,10 @@
+8:57am ~/commonCode>touch gitCommands.txt
+9:02am ~/commonCode>git add gitCommands.txt
+9:03am ~/commonCode>git commit -m 'How to add files to repo.'
+[master 35a42c2] How to add files to repo.
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 gitCommands.txt
+9:03am ~/commonCode>git remote add origin git@github.com:jclong/commonCode.git
+fatal: remote origin already exists.
+9:04am ~/commonCode>git push -u origin master
+To git@github.com:jclong/commonCode.git
