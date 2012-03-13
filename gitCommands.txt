@@ -8,3 +8,42 @@
 fatal: remote origin already exists.
 9:04am ~/commonCode>git push -u origin master
 To git@github.com:jclong/commonCode.git
+9:07am ~/commonCode>vi gitCommands.txt
+9:09am ~/commonCode>git add gitCommands.txt
+9:09am ~/commonCode>git commit -m 'How to add files to repo.'
+[master 4d3a4dc] How to add files to repo.
+ 1 files changed, 10 insertions(+), 0 deletions(-)
+9:09am ~/commonCode>git push -u origin master
+To git@github.com:jclong/commonCode.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:jclong/commonCode.git'
+To prevent you from losing history, non-fast-forward updates were rejected
+Merge the remote changes before pushing again.  See the 'Note about
+fast-forwards' section of 'git push --help' for details.
+9:10am ~/commonCode>git push --help
+9:18am ~/commonCode>git pull
+remote: Counting objects: 5, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From github.com:jclong/commonCode
+   a255996..83833c7  master     -> origin/master
+Auto-merging README
+CONFLICT (content): Merge conflict in README
+Automatic merge failed; fix conflicts and then commit the result.
+9:18am ~/commonCode>vi README 
+9:21am ~/commonCode>git commit -m"fixing merge conflict"
+[master d29c7ee] fixing merge conflict
+9:21am ~/commonCode>git pull
+Already up-to-date.
+9:21am ~/commonCode>git push -u origin master
+Counting objects: 14, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (10/10), 1.26 KiB, done.
+Total 10 (delta 1), reused 0 (delta 0)
+To git@github.com:jclong/commonCode.git
+   83833c7..d29c7ee  master -> master
+Branch master set up to track remote branch master from origin.
+
+
