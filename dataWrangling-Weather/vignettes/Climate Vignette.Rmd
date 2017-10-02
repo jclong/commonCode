@@ -1,0 +1,133 @@
+---
+title: "Climate Vignette"
+author: "Jeffrey Long"
+date: "`r Sys.Date()`"
+output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Climate Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This program is a demo of data wrangling possibilities in R using
+data from the nearest weather station to my home in Duboce Triangle, SF, CA.
+The National Oceanic and Atmospheric Administration (NOAA)
+National Centers For Environmental Information,
+https://www.ncdc.noaa.gov/cdo-web/datatools allowed local station data
+to be ordered and downloaded.
+
+The first datasets obtained for station USW00023272 were daily summaries and hourly precipitation for all time.
+
+```{r}
+library(tidyverse)
+```
+
+```{r eval=FALSE}
+# Slick column rename
+colnames(df)[names(df)=="varName"] <- "newVarName"
+
+# Summarize N of Variable Values
+rowCountForVar <- plyr::ddply(df, .(df$groupingVar,df$varToCount),nrow)
+
+# Consolidate Variable Values
+df$`Consolidated Vars` <- ifelse((df$"Var to Consolidate" == "high")|(df$"Var to Consolidate" == "very high"),"Responding Patient",df$"Var to Consolidate")
+
+# Filter Variable on Value
+df <- filter(df,df$`Variable Name` == "Value")
+
+# Remove duplicates
+df <- unique(df)
+
+# Write data
+write.csv(df,"Filename.csv", row.names=FALSE, na="")
+
+# Flag samples without value for variable
+df$`newVariable` <- ifelse(is.na(df$variable),FALSE,TRUE)
+
+# Create new variable
+df$newVar <- paste("Year", df$year, "Month", df$month, "Day", df$`The Day`)
+
+# Join two dataframes
+df <- left_join(df, altDf, by = c("Var1" = "Var1", "Var2" = "Var2"))
+
+# Sum samples within a group
+df <- aggregate(df$varToFunctionalize, by df["varToGroup"], FUN=mean)
+
+# Parse out columns of interest
+dfSvelte <- select(dfSvelte, 1:42,45)
+
+# Summarise 
+df <- df %>% 
+  group_by(groupVar) %>% 
+  summarise_each(funs(min(resultVar, na.rm = TRUE)))
+# or #
+newDf <- df %>%
+  group_by(groupVar) %>%
+  summarise(df = mean(result))
+
+# Remove commas
+df$`Some Variable` <- gsub(",", "", df$`Some Variable`)
+
+# Read in Excel file
+df <- read_excel("/Path/to/file.xlsx")
+
+# Pulling out columns
+df <- df[,c("Col 1", "Col 2", "Col 3")]
+
+# Adding dataframes together
+dfBound <- rbind(df1, df2)
+
+# Splitting a variable column
+df <- separate(df, `Var Name`, c("Token 1", "Token 2", "Token 3"), sep = "_")
+
+# Transposing data
+dfWide <- dfLong %>% spread(`Row Name Var`, `Result To Spread`, convert = TRUE)
+
+# Remove data
+df <- filter(df, !grepl('ID1|ID2|ID3',idVar))
+
+# Cut up regular values
+df$`The Var` <- substr(as.character(df$`The Var`),index1,index2)
+
+```
+
+## DATA
+
+Loading SF Weather data from September 2017 to earliest record.
+
+```{r}
+library(readr)
+sfDaily <- read_csv("sf1921to2017GhcnDaily.csv")
+# Checking if any columns have just NAs. None do. So none are removed.
+sfDaily <- sfDaily[,colSums(is.na(sfDaily))<nrow(sfDaily)]
+```
+
+## San Francisco Yearly Average Max Temp
+
+```{r, fig.cap = "Duboce Triangle, SF, CA"}
+# fig.show='hold' ## for side by side plots
+sfDaily$YEAR <- substring(sfDaily$DATE,1,4)
+#newDf <- df %>%
+#  group_by(groupVar) %>%
+#  summarize(df = mean(result))
+sfYearMax <- sfDaily %>%
+  group_by(sfDaily$YEAR) %>%
+  summarise((sfDaily = mean(TMAX)))
+plot(sfYearMax)
+```
+
+
+## Recent Data
+
+ The average $Max = \sum DailyTemp_{Max} / N days$, footnote^[some reference to average].
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(tail(sfYearMax, 17))
+```
+
+Update your website `>`:
+
+> "Why do you pay Bluehost if your website is ancient."
+([Me](http://jeffreycarllong.com/))
