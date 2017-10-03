@@ -1,6 +1,8 @@
-Tue Mar 13 08:53:21 PDT 2012
+October 2017
 Jeffrey Long
 
-Starting up a new repo for common code.
-Just getting the framework set up now.
+Data wrangling with R, syntax for manipulating data.frames, data analysis
+of San Francisco weather over the past 100 years, R package, vignette, 
+Tidyverse, and practicals from Hadley Wickham's "Extending the Tidyverse" workshop...
 
+Just to get things started.
