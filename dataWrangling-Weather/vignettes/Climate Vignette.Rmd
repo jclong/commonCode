@@ -37,8 +37,11 @@ df$`Consolidated Vars` <- ifelse((df$"Var to Consolidate" == "high")|(df$"Var to
 # Filter Variable on Value
 df <- filter(df,df$`Variable Name` == "Value")
 
-# Remove duplicates
+# Remove duplicate rows
 df <- unique(df)
+
+# Remove duplicate rows based on two variables
+distinct(df, sepalLength, petalWidth)
 
 # Write data
 write.csv(df,"Filename.csv", row.names=FALSE, na="")
